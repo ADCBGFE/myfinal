@@ -3,17 +3,13 @@ package com.myhome.web.book.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myhome.web.book.model.BookDAO;
 import com.myhome.web.book.model.BookDTO;
-import com.myhome.web.book.model.RentalDTO;
 import com.myhome.web.book.service.BookService;
 import com.myhome.web.rental.model.BookRentalDTO;
 
@@ -30,10 +26,9 @@ public class BookController {
 		return bookService.getBookList();
 	}
 	
-	// 책 상세정보		http://localhost:8080/web/book/book or book/book?bookId=?
+	// 책 상세정보		http://localhost:8080/web/book/book?bookId=?
 	@GetMapping("/book")
-//	@PostMapping("/book")
-	public List<BookDTO> getBook(BookDTO bookDto) {	// Post일경우 @RequestBody 를 BookDTO앞에 붙임
+	public List<BookDTO> getBook(BookDTO bookDto) {
 		return bookService.getBook(bookDto);
 	}
 

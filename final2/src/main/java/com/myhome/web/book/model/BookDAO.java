@@ -30,12 +30,11 @@ public class BookDAO {
 
 		List<BookDTO> bookDtoList = new ArrayList<>();
 
-		String sql = "select * from RANTALPJ.TB_BOOK_BASE "; // todo WHERE BOOK_CATG = ?
+		String sql = "select * from RANTALPJ.TB_BOOK_BASE ";
 
 		try {
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			// todo pstmt.setString(1, book_catg); 카테고리를 추가한다고 했을떄
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -54,7 +53,7 @@ public class BookDAO {
 			e.printStackTrace();
 			return null;
 		} finally {
-			close(rs, pstmt, conn); // private void close(AutoCloseable... acs) {
+			close(rs, pstmt, conn);
 		}
 
 		return bookDtoList;
@@ -78,7 +77,6 @@ public class BookDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-//				BookDTO bookDto = new BookDTO();
 				bookDto.setBookId(rs.getString("BOOK_ID"));
 				bookDto.setBookName(rs.getString("BOOK_NAME"));
 				bookDto.setBookAt(rs.getString("BOOK_AT"));
@@ -94,19 +92,18 @@ public class BookDAO {
 			e.printStackTrace();
 			return null;
 		} finally {
-			close(pstmt, conn); // private void close(AutoCloseable... acs) {
+			close(pstmt, conn);
 		}
 		return bookDtoList;
 	}
 
 	// 대여
 	public int insertRentalBook(BookRentalDTO bookRentalDto) {
-		int rowCnt = FAIL;
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
-		String sql = "insert into RANTALPJ.TR_RT_BASE (BOOK_ID, MB_ID, RT_WH, RT_START_DATE) values (?, ?, 'Y', SYSDATE) ";
+		String sql = "insert into RANTALPJ.TR_RT_BASE (BOOK_ID, MB_ID, RT_WH, RT_START_TIME) values (?, ?, 'Y', SYSDATE) ";
 
 		try {
 			conn = ds.getConnection();
@@ -114,27 +111,27 @@ public class BookDAO {
 			pstmt.setString(1, bookRentalDto.getBookId());
 			pstmt.setString(2, bookRentalDto.getMbId());
 
-			return pstmt.executeUpdate(); // insert, delete, update;
+			return pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return FAIL;
 		} finally {
-			close(pstmt, conn); // private void close(AutoCloseable... acs) {
+			close(pstmt, conn);
 		}
 
 	}
 
 	// 대여한 책 목록
 	public List<BookRentalDTO> selectRentalBookList() {
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		List<BookRentalDTO> BookRentalDtoList = new ArrayList<>();
 
-		String sql = "select BOOK_ID, MB_ID, RT_WH, RT_START_DATE from RANTALPJ.TR_RT_BASE ";
-//		String sql = "select BOOK_ID, MB_ID, RT_WH, TO_CHAR(SYSDATE, 'YYYY/MM/DD') AS RT_START_DATE from RANTALPJ.TR_RT_BASE ";
+		String sql = "select BOOK_ID, MB_ID, RT_WH, RT_START_TIME from RANTALPJ.TR_RT_BASE ";
 
 		try {
 			conn = ds.getConnection();
@@ -146,10 +143,7 @@ public class BookDAO {
 				bookrentalDto.setBookId(rs.getString("BOOK_ID"));
 				bookrentalDto.setMbId(rs.getString("MB_ID"));
 				bookrentalDto.setRtWh(rs.getString("RT_WH"));
-				bookrentalDto.setRtStartTime(rs.getString("RT_START_DATE"));
-//				bookrentalDto.setRtEndTime(rs.getString("RT_END_DATE"));
-//				bookrentalDto.setRtStartTime(new Date(rs.getDate("RT_START_DATE").getTime()));
-//				bookrentalDto.setRtEndTime(new Date(rs.getDate("RT_END_TIME").getTime()));
+				bookrentalDto.setRtStartTime(rs.getString("RT_START_TIME"));
 
 				BookRentalDtoList.add(bookrentalDto);
 			}
@@ -157,7 +151,7 @@ public class BookDAO {
 			e.printStackTrace();
 			return null;
 		} finally {
-			close(rs, pstmt, conn); // private void close(AutoCloseable... acs) {
+			close(rs, pstmt, conn);
 		}
 
 		return BookRentalDtoList;
@@ -165,7 +159,6 @@ public class BookDAO {
 
 	// 반납
 	public int deleteRentalBook(BookRentalDTO bookRentalDto) {
-		int rowCnt = FAIL;
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -177,18 +170,17 @@ public class BookDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, bookRentalDto.getBookId());
 
-			return pstmt.executeUpdate(); // insert, delete, update;
+			return pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return FAIL;
 		} finally {
-			close(pstmt, conn); // private void close(AutoCloseable... acs) {
+			close(pstmt, conn);
 		}
 
 	}
 
-	// 이걸 사용함으로써 매번 close try catch 안해도 됨.
 	private void close(AutoCloseable... acs) { 
 		for (AutoCloseable ac : acs)
 			try {

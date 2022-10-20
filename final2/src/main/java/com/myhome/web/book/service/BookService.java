@@ -3,14 +3,10 @@ package com.myhome.web.book.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myhome.web.book.model.BookDAO;
 import com.myhome.web.book.model.BookDTO;
-import com.myhome.web.book.model.RentalDTO;
-import com.myhome.web.book.model.RentalRes;
-import com.myhome.web.login.model.MemberDAO;
 import com.myhome.web.rental.model.BookRentalDTO;
 
 @Service

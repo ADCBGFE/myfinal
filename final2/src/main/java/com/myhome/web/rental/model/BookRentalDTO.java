@@ -1,6 +1,5 @@
 package com.myhome.web.rental.model;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class BookRentalDTO {
